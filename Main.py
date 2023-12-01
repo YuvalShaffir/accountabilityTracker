@@ -8,4 +8,5 @@ cursor.execute("SELECT url FROM urls")
 urls = cursor.fetchall()
 # Access the first element of each tuple before joining
 formatted_urls = '\n'.join(url[0] for url in urls)
+
 print(formatted_urls)
