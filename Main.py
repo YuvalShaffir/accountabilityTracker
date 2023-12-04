@@ -1,9 +1,10 @@
 import sqlite3
 import shutil
 import time
+import os
 
-shutil.copy('C:\\Users\\yshaf\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History', 'C:\\Users\\yshaf\\PycharmProjects\\Acountability-Tracker')
-con = sqlite3.connect('C:\\Users\\yshaf\\PycharmProjects\\Acountability-Tracker\\History')
+shutil.copy(os.path.abspath('Google\\Chrome\\User Data\\Default\\History'), os.path.abspath('Acountability-Tracker'))
+con = sqlite3.connect(os.path.abspath('Acountability-Tracker\\History'))
 cursor = con.cursor()
 # Calculate the timestamp for the start of the last day (24 hours ago)
 start_of_last_day = int(time.time()) - 24 * 60 * 60
