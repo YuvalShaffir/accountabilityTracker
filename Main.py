@@ -1,10 +1,11 @@
 import sqlite3
 import shutil
 import time
-import os
 
-shutil.copy(os.path.abspath('Google\\Chrome\\User Data\\Default\\History'), os.path.abspath('Acountability-Tracker'))
-con = sqlite3.connect(os.path.abspath('Acountability-Tracker\\History'))
+source_path = 'C:\\Users\\User\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History'
+destination_path = 'E:\\PythonProjects\\Acountability-Tracker'
+shutil.copy(source_path, destination_path)
+con = sqlite3.connect('E:\\PythonProjects\\Acountability-Tracker\\History')
 cursor = con.cursor()
 # Calculate the timestamp for the start of the last day (24 hours ago)
 start_of_last_day = int(time.time()) - 24 * 60 * 60
@@ -13,7 +14,7 @@ start_of_last_day = int(time.time()) - 24 * 60 * 60
 cursor.execute("SELECT urls.url, visits.visit_duration FROM urls, visits WHERE urls.id = visits.url AND urls.last_visit_time >= ?", (start_of_last_day,))
 
 results = cursor.fetchall()
-
+print(results)
 # Calculate and print the amount of time spent on each site
 for url, visit_duration in results:
     # Convert microseconds to seconds
