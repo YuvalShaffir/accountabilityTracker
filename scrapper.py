@@ -54,3 +54,5 @@ def get_website_content(website):
 
     except Exception as e:
         print(e)
+
+print(get_website_content("https://www.ynet.co.il"))
