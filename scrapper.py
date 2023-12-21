@@ -1,5 +1,7 @@
 import cloudscraper
 from bs4 import BeautifulSoup
+from googletrans import Translator
+# from google.cloud import translate
 
 # Create scrapper
 scraper = cloudscraper.create_scraper(browser='chrome')
@@ -49,8 +51,10 @@ def get_website_content(website):
 
         all_text = (str(title) + " " + str(description) + " " + str(h1_text) + " " + str(h2_text) + " " + str(h3_text)
                     + " " + str(p_text))
-
-        return all_text[0:999]
+        translator = Translator()
+        # return all_text[0:999]
+        translation = translator.translate(all_text[0:999], dest='en').text
+        return translation
 
     except Exception as e:
         print(e)
