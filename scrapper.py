@@ -51,8 +51,9 @@ def get_website_content(website):
 
         all_text = (str(title) + " " + str(description) + " " + str(h1_text) + " " + str(h2_text) + " " + str(h3_text)
                     + " " + str(p_text))
+
+        # Translate the text to English
         translator = Translator()
-        # return all_text[0:999]
         translation = translator.translate(all_text[0:999], dest='en').text
         return translation
 
