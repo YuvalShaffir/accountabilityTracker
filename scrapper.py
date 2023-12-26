@@ -1,6 +1,7 @@
 import cloudscraper
 from bs4 import BeautifulSoup
 from googletrans import Translator
+
 # from google.cloud import translate
 
 # Create scrapper
@@ -60,4 +61,12 @@ def get_website_content(website):
     except Exception as e:
         print(e)
 
-print(get_website_content("https://www.ynet.co.il"))
+
+# print(get_website_content("https://www.ynet.co.il"))
+
+
+def extract_metadata(url_dict):
+    metadata_dict = {}
+    for url, time_spent in url_dict.items():
+        metadata_dict[url] = get_website_content(url)
+    return metadata_dict
