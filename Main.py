@@ -1,6 +1,7 @@
 import sqlite3
 import shutil
 import time
+from urllib.parse import urlparse
 import website_predictor
 import scrapper
 import matplotlib.pyplot as plt
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 
 def get_urls():
     url_dict = {}  # Dictionary of URLs and the time spent on each website {URL: Time Spent}
-    source_path = 'C:\\Users\\User\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History'
+    source_path = 'C:\\Users\\User\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\History'
     destination_path = 'E:\\PythonProjects\\Acountability-Tracker'
 
     shutil.copy(source_path, destination_path)
@@ -19,7 +20,7 @@ def get_urls():
 
     # Execute the SQL query to select search history from the last day
     cursor.execute(
-        "SELECT urls.url, visits.visit_duration FROM urls, visits WHERE urls.id = visits.url AND urls.last_visit_time >= ?",
+        "SELECT urls.url, visits.visit_duration FROM urls JOIN visits ON urls.id = visits.url WHERE urls.last_visit_time >= ?",
         (start_of_last_day,))
 
     results = cursor.fetchall()
@@ -32,6 +33,8 @@ def get_urls():
         # Format the time duration in hours, minutes, and seconds
         formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_duration_seconds))
         # add to the list
+        # todo: clean the URL
+        # url = urlparse(url)._replace(path='').geturl()
         url_dict[url] = formatted_time
         print(f"URL: {url}\nTime Spent: {formatted_time}\n")
 
@@ -48,6 +51,7 @@ def show_predictions(predictions_dict, url_dict):
 if __name__ == '__main__':
     url_dict = get_urls()
     metadata_dict = scrapper.extract_metadata(url_dict)
-    predictions_dict = website_predictor.predict(metadata_dict)
-    show_predictions(predictions_dict, url_dict)
+    print(metadata_dict)
+    # predictions_dict = website_predictor.predict(metadata_dict)
+    # show_predictions(predictions_dict, url_dict)
     # send_pie_chart(predictions_dict, url_dict)
