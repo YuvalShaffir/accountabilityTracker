@@ -24,21 +24,27 @@ def get_urls():
         (start_of_last_day,))
 
     results = cursor.fetchall()
-    print(results)
+    # print(results)
     # Calculate and print the amount of time spent on each site
     for url, visit_duration in results:
+        # add to the list
+        url = urlparse(url)._replace(path='')._replace(fragment="")._replace(query='').geturl()
+        if url not in url_dict:
+            url_dict[str(url)] = visit_duration
+        else:
+            url_dict[str(url)] += visit_duration
+
+    url_dict_min_time = {u:v for u, v in url_dict.items() if v > 1000000000}
+    for url, visit_duration in url_dict_min_time.items():
+
         # Convert microseconds to seconds
         time_duration_seconds = visit_duration / 1e6
 
         # Format the time duration in hours, minutes, and seconds
         formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_duration_seconds))
-        # add to the list
-        # todo: clean the URL
-        # url = urlparse(url)._replace(path='').geturl()
-        url_dict[url] = formatted_time
         print(f"URL: {url}\nTime Spent: {formatted_time}\n")
 
-    return url_dict
+    return url_dict_min_time
 
 
 def show_predictions(predictions_dict, url_dict):
