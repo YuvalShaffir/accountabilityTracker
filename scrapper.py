@@ -1,6 +1,9 @@
 import cloudscraper
 from bs4 import BeautifulSoup
 from googletrans import Translator
+# import threading
+from multiprocessing.pool import Pool
+import multiprocessing
 
 # from google.cloud import translate
 
@@ -11,7 +14,18 @@ headers = {
 }
 
 
-def get_website_content(website):
+def translate_text(text):
+    # Translate the text to English
+    try:
+        translator = Translator()
+        translation = translator.translate(text[0:999], dest='en').text
+        return translation
+
+    except Exception as e:
+        print(e)
+
+
+def get_website_content(website) -> str:
     try:
         # sends an HTTP GET request to the specified website. The headers, including the User-Agent,
         # are provided to simulate a request from a specific browser and operating system.
@@ -53,10 +67,9 @@ def get_website_content(website):
         all_text = (str(title) + " " + str(description) + " " + str(h1_text) + " " + str(h2_text) + " " + str(h3_text)
                     + " " + str(p_text))
 
-        # Translate the text to English
-        translator = Translator()
-        translation = translator.translate(all_text[0:999], dest='en').text
-        return translation
+        print(all_text[0:999])
+
+        return all_text[0:999]
 
     except Exception as e:
         print(e)
@@ -65,8 +78,22 @@ def get_website_content(website):
 # print(get_website_content("https://www.ynet.co.il"))
 
 
-def extract_metadata(url_dict):
+def extract_metadata(url_dict) -> dict:
     metadata_dict = {}
-    for url, time_spent in url_dict.items():
-        metadata_dict[url] = get_website_content(url)
+
+    with Pool(processes=10) as pool:
+        metadata_dict = pool.map(get_website_content, url_dict.keys())
+
+
+    # threads = []
+    # for i in range(10):
+    #     x = threading.Thread(target=get_website_content, args=(url_dict[i],))
+    #     threads.append(x)
+    #     x.start()
+    #
+    # for index, thread in enumerate(threads):
+    #     metadata_dict[url_dict[index]] = thread.join()
+
+    # for url, time_spent in url_dict.items():
+    #     metadata_dict[url] = get_website_content(url)
     return metadata_dict
