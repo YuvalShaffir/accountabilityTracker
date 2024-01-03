@@ -2,13 +2,13 @@ import sqlite3
 import shutil
 import time
 from urllib.parse import urlparse
-import website_predictor
+# import website_predictor
 import os
 import scrapper
 import matplotlib.pyplot as plt
 
 
-def get_history_file(profile='Default') -> str:
+def get_history_file(profile='Default'):
     """Returns the path to the Chrome history file.
     @param profile: Name of the chrome Profile, profile = 'Default'.
     example: get_history_file('Profile 1')"""
@@ -17,13 +17,18 @@ def get_history_file(profile='Default') -> str:
         default_profile_path = os.path.expanduser('~/.config/google-chrome/'+profile+'/History')
     elif os.name == 'nt':  # Windows
         default_profile_path = os.path.expandvars(r'%LOCALAPPDATA%/Google/Chrome/User Data/'+profile+'/History')
-    print(default_profile_path)
-    return default_profile_path
+
+    # Check if the path exists before returning
+    if os.path.exists(default_profile_path):
+        print("Chrome History file path:", default_profile_path)
+        return default_profile_path
+    else:
+        raise Exception("Path does not exist for profile: "+profile)
 
 
 def get_urls():
     url_dict = {}  # Dictionary of URLs and the time spent on each website {URL: Time Spent}
-    source_path = 'C:\\Users\\User\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\History'
+    source_path = get_history_file()  # Enter profile type if needed
     destination_path = 'E:\\PythonProjects\\Acountability-Tracker'
 
     shutil.copy(source_path, destination_path)
@@ -70,9 +75,7 @@ def show_predictions(predictions_dict, url_dict):
 
 def main():
     """Main function"""
-    get_history_file()
-
-    # url_dict = get_urls()
+    url_dict = get_urls()
     # metadata_dict = scrapper.extract_metadata(url_dict)
     # print(metadata_dict)
     # predictions_dict = website_predictor.predict(metadata_dict)
