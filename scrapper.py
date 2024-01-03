@@ -5,7 +5,7 @@ from googletrans import Translator
 from multiprocessing.pool import Pool
 import multiprocessing
 import lxml
-import cchardet
+# import cchardet
 from urllib.error import HTTPError
 
 REQUEST_TIMEOUT = 0.001
