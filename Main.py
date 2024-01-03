@@ -51,6 +51,7 @@ def connect_history_file():
     shutil.copy(source_path, destination_path)
 
     # connect to the database
+    # todo: work on the exception handling
     con = sqlite3.connect(destination_path + DEST_FILE_NAME)
     cursor = con.cursor()
     print("-Connected to the database")
