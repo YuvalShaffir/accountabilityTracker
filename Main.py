@@ -3,8 +3,22 @@ import shutil
 import time
 from urllib.parse import urlparse
 import website_predictor
+import os
 import scrapper
 import matplotlib.pyplot as plt
+
+
+def get_history_file(profile='Default') -> str:
+    """Returns the path to the Chrome history file.
+    @param profile: Name of the chrome Profile, profile = 'Default'.
+    example: get_history_file('Profile 1')"""
+    default_profile_path = ''
+    if os.name == 'posix':  # Linux or macOS
+        default_profile_path = os.path.expanduser('~/.config/google-chrome/'+profile+'/History')
+    elif os.name == 'nt':  # Windows
+        default_profile_path = os.path.expandvars(r'%LOCALAPPDATA%/Google/Chrome/User Data/'+profile+'/History')
+    print(default_profile_path)
+    return default_profile_path
 
 
 def get_urls():
@@ -54,10 +68,17 @@ def show_predictions(predictions_dict, url_dict):
     plt.show()
 
 
-if __name__ == '__main__':
-    url_dict = get_urls()
-    metadata_dict = scrapper.extract_metadata(url_dict)
-    print(metadata_dict)
+def main():
+    """Main function"""
+    get_history_file()
+
+    # url_dict = get_urls()
+    # metadata_dict = scrapper.extract_metadata(url_dict)
+    # print(metadata_dict)
     # predictions_dict = website_predictor.predict(metadata_dict)
     # show_predictions(predictions_dict, url_dict)
     # send_pie_chart(predictions_dict, url_dict)
+
+
+if __name__ == '__main__':
+    main()
