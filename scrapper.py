@@ -6,6 +6,9 @@ from multiprocessing.pool import Pool
 import multiprocessing
 import lxml
 import cchardet
+from urllib.error import HTTPError
+
+REQUEST_TIMEOUT = 0.001
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121' \
              ' Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
@@ -27,54 +30,91 @@ def translate_text(text):
         print(e)
 
 
+def get_request(website):
+    # sends an HTTP GET request to the specified website. The headers, including the User-Agent,
+    # are provided to simulate a request from a specific browser and operating system.
+    try:
+        response = scraper.get(website, headers=headers, timeout=REQUEST_TIMEOUT)
+    except Exception as e:
+        print(e)
+        response = None
+    return response
+
+
+def get_website_description(soup):
+    description = soup.find('meta', attrs={'name': 'description'})
+    # Check if the meta description tag has the 'content' attribute
+    if 'content' in str(description):
+        description = description.get('content')
+    else:
+        description = ""
+
+    return description
+
+
+def get_website_title(soup):
+    """Extract the title from the HTML document"""
+    try:
+        title = soup.find('title')
+        if title is not None:
+            return title.text
+
+    except Exception as e:
+        print(e)
+        return ""
+
+
+def get_website_text(text_type, soup) -> str:
+    """Extract the text from the HTML document"""
+    try:
+        tags = soup.find_all(text_type)
+        text = ""
+        for tag in tags:
+            text += tag.text + " "
+        return text
+
+    except Exception as e:
+        print(e)
+        return ""
+
+
+def create_soup(request):
+    # The request is parsed using BeautifulSoup, that makes it easier to navigate the HTML document, and extract
+    # the information from it.
+    try:
+        soup = BeautifulSoup(request.text, 'html.parser')
+        return soup
+    except Exception as e:
+        print(e)
+        return None
+
+
 def get_website_content(website) -> str:
     try:
-        # sends an HTTP GET request to the specified website. The headers, including the User-Agent,
-        # are provided to simulate a request from a specific browser and operating system.
-        response = scraper.get(website, headers=headers)
+        request = get_request(website)
+        if request is None:
+            return ""
 
-        # The response is parsed using BeautifulSoup, that makes it easier to navigate the HTML document, and extract
-        # the information from it.
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = create_soup(request)
+        if soup is None:
+            return ""
 
-        # Extract the title and description from the HTML document
-        title = soup.find('title').text
-        description = soup.find('meta', attrs={'name': 'description'})
+        title = get_website_title(soup)
+        description = get_website_description(soup)
 
-        # Check if the meta description tag has the 'content' attribute
-        if 'content' in str(description):
-            description = description.get('content')
-        else:
-            description = ""
-
-        h1 = soup.find_all('h1')
-        h2 = soup.find_all('h2')
-        h3 = soup.find_all('h3')
-        paragraphs = soup.find_all('p')
-
-        # Extract the text from the h1, h2, and h3 tags
-        h1_text = ""
-        h2_text = ""
-        h3_text = ""
-        p_text = ""
-        for tag in h1:
-            h1_text += tag.text + " "
-        for tag in h2:
-            h2_text += tag.text + " "
-        for tag in h3:
-            h3_text += tag.text + " "
-        for tag in paragraphs:
-            p_text += tag.text + " "
+        h1_text = get_website_text('h1', soup)
+        h2_text = get_website_text('h2', soup)
+        h3_text = get_website_text('h3', soup)
+        p_text = get_website_text('p', soup)
 
         all_text = (str(title) + " " + str(description) + " " + str(h1_text) + " " + str(h2_text) + " " + str(h3_text)
                     + " " + str(p_text))
-
-        print(all_text[0:999])
 
         return all_text[0:999]
 
     except Exception as e:
         print(e)
+        return ""
 
 
 def extract_metadata(url_dict) -> dict:
