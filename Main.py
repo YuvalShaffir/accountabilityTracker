@@ -136,8 +136,7 @@ def show_predictions(predictions_dict, url_dict):
 
 def main():
     """Main function"""
-    get_dest_path()
-    # url_dict = get_urls()
+    url_dict = get_urls()
     # metadata_dict = scrapper.extract_metadata(url_dict)
     # print(metadata_dict)
     # predictions_dict = website_predictor.predict(metadata_dict)

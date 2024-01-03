@@ -4,14 +4,16 @@ from googletrans import Translator
 # import threading
 from multiprocessing.pool import Pool
 import multiprocessing
+import lxml
+import cchardet
 
-# from google.cloud import translate
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121' \
+             ' Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+BROWSER = 'chrome'
 
-# Create scrapper
-scraper = cloudscraper.create_scraper(browser='chrome')
-headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
-}
+# create scrapper
+scraper = cloudscraper.create_scraper(browser=BROWSER)
+headers = {'user-agent': USER_AGENT}
 
 
 def translate_text(text):
@@ -73,9 +75,6 @@ def get_website_content(website) -> str:
 
     except Exception as e:
         print(e)
-
-
-# print(get_website_content("https://www.ynet.co.il"))
 
 
 def extract_metadata(url_dict) -> dict:
