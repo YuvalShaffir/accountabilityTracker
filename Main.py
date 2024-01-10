@@ -7,11 +7,7 @@ import os
 import scrapper
 import matplotlib.pyplot as plt
 
-# The default Chrome profile name, if you have multiple profiles,
-# change this to the name of the profile you want to use.
-DEFAULT_TIME_THRESHOLD = 1000000
-CHROME_PROFILE = 'Default'
-DEST_FILE_NAME = 'History'
+
 
 
 def get_history_file(profile=CHROME_PROFILE):
@@ -65,7 +61,8 @@ def search_database(cursor):
 
     # Execute the SQL query to select search history from the last day
     cursor.execute(
-        "SELECT urls.url, visits.visit_duration FROM urls JOIN visits ON urls.id = visits.url WHERE urls.last_visit_time >= ?",
+        "SELECT urls.url, visits.visit_duration FROM urls JOIN visits ON "
+        "urls.id = visits.url WHERE urls.last_visit_time >= ?",
         (start_of_last_day,))
 
     results = cursor.fetchall()
