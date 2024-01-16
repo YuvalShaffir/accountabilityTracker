@@ -1,0 +1,6 @@
+matplotlib~=3.8.2
+googletrans~=3.0.0
+lxml~=5.0.0
+cloudscraper~=1.2.71
+beautifulsoup4~=4.12.2
+google~=3.0.0

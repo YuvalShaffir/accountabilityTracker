@@ -3,7 +3,6 @@
 # import threading
 import sqlite3
 import shutil
-
 import os
 import time
 from urllib.parse import urlparse
