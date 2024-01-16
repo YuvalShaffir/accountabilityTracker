@@ -1,6 +1,9 @@
-from multiprocessing.pool import Pool
+# from multiprocessing.pool import Pool
+from typing import Tuple, Any
+
 import cloudscraper
 from bs4 import BeautifulSoup
+import asyncio
 
 
 class metaExtractor:
@@ -14,7 +17,7 @@ class metaExtractor:
         self._scraper = cloudscraper.create_scraper(browser=self.BROWSER)
         self._headers = {'user-agent': self.USER_AGENT}
 
-    def _get_request(self, website):
+    async def _get_request(self, website):
         # sends an HTTP GET request to the specified website. The headers, including the User-Agent,
         # are provided to simulate a request from a specific browser and operating system.
         try:
@@ -24,7 +27,7 @@ class metaExtractor:
             response = None
         return response
 
-    def _get_website_description(self):
+    async def _get_website_description(self):
         description = self._soup.find('meta', attrs={'name': 'description'})
         # Check if the meta description tag has the 'content' attribute
         if 'content' in str(description):
@@ -34,7 +37,7 @@ class metaExtractor:
 
         return description
 
-    def _get_website_title(self):
+    async def _get_website_title(self):
         """Extract the title from the HTML document"""
         try:
             title = self._soup.find('title')
@@ -45,7 +48,7 @@ class metaExtractor:
             print(e)
             return ""
 
-    def _get_website_text(self, text_type) -> str:
+    async def _get_website_text(self, text_type) -> str:
         """Extract the text from the HTML document"""
         try:
             tags = self._soup.find_all(text_type)
@@ -58,7 +61,7 @@ class metaExtractor:
             print(e)
             return ""
 
-    def _create_soup(self):
+    async def _create_soup(self):
         # The request is parsed using BeautifulSoup, that makes it easier to navigate the HTML document, and extract
         # the information from it.
         try:
@@ -68,23 +71,23 @@ class metaExtractor:
             print(e)
             return None
 
-    def _get_website_content(self, website) -> str:
+    async def _get_website_content(self, website) -> str:
         try:
-            self._request = self._get_request(website)
+            self._request = await self._get_request(website)
             if self._request is None:
                 return ""
 
-            self._soup = self._create_soup()
+            self._soup = await self._create_soup()
             if self._soup is None:
                 return ""
 
-            title = self._get_website_title()
-            description = self._get_website_description()
+            title = await self._get_website_title()
+            description = await self._get_website_description()
 
-            h1_text = self._get_website_text('h1')
-            h2_text = self._get_website_text('h2')
-            h3_text = self._get_website_text('h3')
-            p_text = self._get_website_text('p')
+            h1_text = await self._get_website_text('h1')
+            h2_text = await self._get_website_text('h2')
+            h3_text = await self._get_website_text('h3')
+            p_text = await self._get_website_text('p')
 
             all_text = (str(title) + " " + str(description) + " " + str(h1_text) + " " + str(h2_text) + " "
                         + str(h3_text) + " " + str(p_text))
@@ -95,11 +98,12 @@ class metaExtractor:
             print(e)
             return ""
 
-    def extract(self) -> dict:
+    async def extract(self):
         metadata_dict = {}
+        metadata_dict = await asyncio.gather(*[self._get_website_content(website) for website in self.url_dict.keys()])
 
-        with Pool(processes=10) as pool:
-            metadata_dict = pool.map(self._get_website_content, self.url_dict.keys())
+        # with Pool(processes=10) as pool:
+        #     metadata_dict = pool.map(self._get_website_content, self.url_dict.keys())
 
         # threads = []
         # for i in range(10):
