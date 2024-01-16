@@ -13,8 +13,8 @@ class metaExtractor:
 
     def __init__(self, url_dict):
         self.url_dict = url_dict
-        self._scraper = cloudscraper.create_scraper(browser=self.BROWSER)
-        self._headers = {'user-agent': self.USER_AGENT}
+        self._scraper = cloudscraper.create_scraper(browser=metaExtractor.BROWSER)
+        self._headers = {'user-agent': metaExtractor.USER_AGENT}
 
     async def _get_request(self, website):
         # sends an HTTP GET request to the specified website. The headers, including the User-Agent,
