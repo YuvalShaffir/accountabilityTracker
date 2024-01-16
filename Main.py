@@ -4,7 +4,7 @@ import time
 from urllib.parse import urlparse
 # import website_predictor
 import os
-import scrapper
+from Scrapper import scrapper
 import matplotlib.pyplot as plt
 
 
