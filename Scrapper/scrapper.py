@@ -1,12 +1,9 @@
 
-
-# import threading
 import sqlite3
 import shutil
 import os
 import time
 from urllib.parse import urlparse
-import multiprocessing
 import lxml
 # import cchardet
 from urllib.error import HTTPError
@@ -21,12 +18,11 @@ class Scrapper:
     DEFAULT_TIME_THRESHOLD = 1000000
     CHROME_PROFILE = 'Default'
 
-    def __init__(self, chrome_profile: str = CHROME_PROFILE, request_timeout: float = REQUEST_TIMEOUT
-                 , user_agent: str = USER_AGENT, browser: str = BROWSER, dest_file_name: str = DEST_FILE_NAME,
+    def __init__(self, chrome_profile: str = CHROME_PROFILE
+                 , dest_file_name: str = DEST_FILE_NAME,
                  default_time_threshold: float = DEFAULT_TIME_THRESHOLD):
 
         self._chrome_profile = chrome_profile
-        self._browser = browser
         self._dest_file_name = dest_file_name
         self._default_time_threshold = default_time_threshold
 

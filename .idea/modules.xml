@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Acountability-Tracker.iml" filepath="$PROJECT_DIR$/.idea/Acountability-Tracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/accountabilityTracker.iml" filepath="$PROJECT_DIR$/.idea/accountabilityTracker.iml" />
     </modules>
   </component>
 </project>

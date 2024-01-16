@@ -13,7 +13,8 @@ class websitePredictor:
     def __init__(self, metadata_dict):
         self._meta_dict = metadata_dict
 
-    def _get_prediction(self, metadata):
+    @staticmethod
+    def _get_prediction(metadata):
         try:
             text_content = str(metadata)[0:1000]
 

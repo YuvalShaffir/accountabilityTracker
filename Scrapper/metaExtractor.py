@@ -1,5 +1,4 @@
-# from multiprocessing.pool import Pool
-from typing import Tuple, Any
+# Scrapper\metaExtractor.py
 
 import cloudscraper
 from bs4 import BeautifulSoup
