@@ -1,5 +1,7 @@
 from googletrans import Translator
 import matplotlib.pyplot as plt
+import tldextract
+
 
 
 def translate_text(text: str):
@@ -18,3 +20,8 @@ def show_predictions(predictions_dict, url_dict):
             autopct='%1.1f%%')
     plt.savefig('E:\\PythonProjects\\Acountability-Tracker\\website_usage.png', bbox_inches='tight')
     plt.show()
+
+
+def get_website_name(url: str) -> str:
+    extracted_info = tldextract.extract(url)
+    return extracted_info.domain
