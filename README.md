@@ -8,6 +8,7 @@ As a result of the Oct 7th war, I found myself, and my friends more addicted to 
 - Extracting metadata from each website - [V]
 - Categorizing websites using Google machine learning NLP categorization model - [V]
 - Designing the project as organized packages - [V]
+- Using asyncio to make the scrapping and metadata requests more efficient - [ ]
 - Sending a message through Telegram - [ ]
 - Creating GUI - [ ]
 
