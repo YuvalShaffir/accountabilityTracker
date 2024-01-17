@@ -1,5 +1,5 @@
 # Acountability-Tracker
-כ![ImgProUtils](https://github.com/YuvalShaffir/accountabilityTracker/assets/34415892/1b61f165-a055-45e9-bd9b-2c8817b52bd5)
+![ImgProUtils](https://github.com/YuvalShaffir/accountabilityTracker/assets/34415892/1b61f165-a055-45e9-bd9b-2c8817b52bd5)
 
 As a result of the Oct 7th war, I found myself, and my friends more addicted to news and social media. This project might help with that by sending a categorized summary of the user's browsing history each day to an accountability friend through Telegram. 
 
