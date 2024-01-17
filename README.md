@@ -1,4 +1,4 @@
-# Acountability-Tracker
+
 ![Accountability Tracker](https://github.com/YuvalShaffir/accountabilityTracker/assets/34415892/05f24280-f093-4839-a238-7f5c63d05da4)
 
 
