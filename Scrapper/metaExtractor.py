@@ -155,5 +155,5 @@ class metaExtractor:
             @:param: A dictionary of websites {{website : duration}}.
         @:returns: A dictionary of websites with metadata {{website : metadata}}.
         """
-        metadata_dict = {website: self._get_website_content(website) for website in self.url_dict.keys()}
+        metadata_dict = {website: self._get_website_content(website) for website in tqdm(self.url_dict.keys())}
         return {k: v for k, v in metadata_dict.items() if v != ""}  # remove empty metadata
