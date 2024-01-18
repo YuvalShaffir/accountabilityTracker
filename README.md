@@ -2,7 +2,14 @@
 ![Accountability Tracker](https://github.com/YuvalShaffir/accountabilityTracker/assets/34415892/05f24280-f093-4839-a238-7f5c63d05da4)
 
 
-As a result of the Oct 7th war, I found myself, and my friends more addicted to news and social media. This project might help with that by sending a categorized summary of the user's browsing history each day to an accountability friend through Telegram. 
+Following the events of the October 7th war, I observed a significant surge in news and social media consumption among my friends, family, and myself. This surge negatively impacted our work efficiency, prompting me to seek a solution. 
+Drawing from my experiences with accountability partners during my student life, I developed a tool aimed at enhancing productivity.
+
+This tool generates a categorized pie chart of my internet usage, breaking down the data into specific subjects such as Work, Social Media, News, and more. 
+To achieve this, I utilize cloudscraper for website data scraping and the Google Language V1 categorization model to analyze and categorize the metadata from various websites. 
+This innovative approach not only addresses the challenges posed by increased media consumption but also provides a tangible solution for maintaining focus and productivity.
+
+ 
 
 # Project in-progress steps:
 - Website scrapping - [V]
