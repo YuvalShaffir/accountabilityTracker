@@ -12,13 +12,14 @@ This innovative approach not only addresses the challenges posed by increased me
  
 
 # Project in-progress steps:
-- Website scrapping - [V]
-- Extracting metadata from each website - [V]
-- Categorizing websites using Google machine learning NLP categorization model - [V]
-- Designing the project as organized packages - [V]
-- Using asyncio to make the scrapping and metadata requests more efficient - [ ]
-- Sending a message through Telegram - [ ]
-- Creating GUI - [ ]
+
+- [x] Website scrapping
+- [x] Extracting metadata from each website 
+- [x] Categorizing websites using Google machine learning NLP categorization model 
+- [x] Designing the project as organized packages
+- [ ] Using asyncio to make the scrapping and metadata requests more efficient 
+- [ ] Sending a message through Telegram
+- [ ] Creating GUI 
 
 # Classes:
 Scrapper
