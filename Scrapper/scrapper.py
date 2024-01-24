@@ -13,10 +13,9 @@ class Scrapper:
     """Scrapper class for scraping the web and translating the content."""
 
     # ====== Constants ====== #
-
-    DEST_FILE_NAME = 'History'
-    DEFAULT_TIME_THRESHOLD = 1000000
-    CHROME_PROFILE = 'Default'
+    DEST_FILE_NAME = 'History'  # the name of the Chrome history file
+    DEFAULT_TIME_THRESHOLD = 1000000  # the default time threshold for the history file
+    CHROME_PROFILE = 'Default'  # the Chrome profile
 
     def __init__(self, chrome_profile: str = CHROME_PROFILE
                  , dest_file_name: str = DEST_FILE_NAME,
@@ -26,17 +25,16 @@ class Scrapper:
         self._dest_file_name = dest_file_name
         self._default_time_threshold = default_time_threshold
 
-    # todo: getters and setters
-
+    # ====== private Methods ====== #
     def _get_history_file(self) -> str:
         """Returns the path to the Chrome history file."""
         default_profile_path = ''
         if os.name == 'posix':  # Linux or macOS
-            default_profile_path = os.path.expanduser('~/.config/google-chrome/' + self._chrome_profile + '/'
+            default_profile_path = os.path.expanduser("~/config/google-chrome/" + self._chrome_profile + "/"
                                                       + self._dest_file_name)
         elif os.name == 'nt':  # Windows
-            default_profile_path = os.path.expandvars(r'%LOCALAPPDATA%/Google/Chrome/User Data/' + self._chrome_profile
-                                                      + '/'+ self._dest_file_name)
+            default_profile_path = os.path.expandvars(r"%LOCALAPPDATA%/Google/Chrome/User Data/" + self._chrome_profile
+                                                      + "/" + self._dest_file_name)
 
         # Check if the path exists before returning
         if os.path.exists(default_profile_path):
@@ -48,7 +46,7 @@ class Scrapper:
     @staticmethod
     def _get_dest_path() -> str:
         """Returns the path to the destination to which we want to copy the Chrome history file to."""
-        dest_path = os.path.dirname(os.path.abspath(__file__))
+        dest_path = os.path.dirname(os.path.abspath(__file__)) + "/"
         if os.path.exists(dest_path):
             print("Destination path:", dest_path)
             return dest_path
@@ -76,8 +74,7 @@ class Scrapper:
 
         # Execute the SQL query to select search history from the last day
         self._cursor.execute(
-            "SELECT urls.url, visits.visit_duration FROM urls JOIN visits ON "
-            "urls.id = visits.url WHERE urls.last_visit_time >= ?",
+            "SELECT urls.url, visits.visit_duration FROM urls JOIN visits ON urls.id = visits.url WHERE urls.last_visit_time >= ?",
             (start_of_last_day,))
 
         results = self._cursor.fetchall()
@@ -121,6 +118,16 @@ class Scrapper:
         for url, visit_duration in url_dict_min_time.items():
             formatted_time = self._get_formatted_time(visit_duration)
             print(f"URL: {url}\nTime Spent: {formatted_time}\n")
+
+    # ====== public Methods ====== #
+    def set_chrome_profile(self, chrome_profile: str):
+        self._chrome_profile = chrome_profile
+
+    def set_dest_file_name(self, dest_file_name: str):
+        self._dest_file_name = dest_file_name
+
+    def set_default_time_threshold(self, default_time_threshold: float):
+        self._default_time_threshold = default_time_threshold
 
     def scrap_history(self):
         """Returns a dictionary of URLs and the time spent on each website {URL: Time Spent}

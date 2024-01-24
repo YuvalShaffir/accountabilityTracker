@@ -1,12 +1,17 @@
+from Scrapper.scrapper import Scrapper
+from Scrapper.metaExtractor import metaExtractor
+from websitePredictor.websitePredictor import websitePredictor
+
 
 def main():
     """Main function"""
-    url_dict = get_urls()
-    metadata_dict = scrapper.extract_metadata(url_dict)
-    print(metadata_dict)
-    # predictions_dict = website_predictor.predict(metadata_dict)
-    # show_predictions(predictions_dict, url_dict)
-    # send_pie_chart(predictions_dict, url_dict)
+    s = Scrapper()
+    url_dict = s.scrap_history()
+
+    metadata_dict = metaExtractor(url_dict).extract()
+    predicted_dict = websitePredictor(metadata_dict).predict()
+
+    print(predicted_dict)
 
 
 if __name__ == '__main__':
