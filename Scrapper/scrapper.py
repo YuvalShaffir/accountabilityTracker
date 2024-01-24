@@ -4,10 +4,10 @@ import shutil
 import os
 import time
 from urllib.parse import urlparse
+import asyncio
 import lxml
 # import cchardet
 from urllib.error import HTTPError
-
 
 
 class Scrapper:
@@ -71,6 +71,7 @@ class Scrapper:
         self._cursor = con.cursor()
         print("==== Connected to the database ====")
 
+
     def _search_database(self):
         """ Execute the SQL query to select search history from the last day """
         # Calculate the timestamp for the start of the last day (24 hours ago)
@@ -107,12 +108,12 @@ class Scrapper:
         """Fill the dictionary with URLs and the time spent on each website {URL: Time Spent}"""
         url_dict = {}  # Dictionary of URLs and the time spent on each website {URL: Time Spent}
         for url, visit_duration in results:
-            url = self._clean_url(url)
+            url = str(self._clean_url(url))
 
             if url not in url_dict:
-                url_dict[str(url)] = visit_duration
+                url_dict[url] = visit_duration
             else:
-                url_dict[str(url)] += visit_duration
+                url_dict[url] += visit_duration
 
         return url_dict
 
