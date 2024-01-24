@@ -9,10 +9,14 @@ import lxml
 from urllib.error import HTTPError
 
 
+
 class Scrapper:
     """Scrapper class for scraping the web and translating the content."""
 
     # ====== Constants ====== #
+    SQL_QUERY = "SELECT urls.url, visits.visit_duration " \
+                "FROM urls JOIN visits ON urls.id = visits.url " \
+                "WHERE urls.last_visit_time >= ?"
     DEST_FILE_NAME = 'History'  # the name of the Chrome history file
     DEFAULT_TIME_THRESHOLD = 1000000  # the default time threshold for the history file
     CHROME_PROFILE = 'Default'  # the Chrome profile
@@ -73,9 +77,7 @@ class Scrapper:
         start_of_last_day = int(time.time()) - 24 * 60 * 60
 
         # Execute the SQL query to select search history from the last day
-        self._cursor.execute(
-            "SELECT urls.url, visits.visit_duration FROM urls JOIN visits ON urls.id = visits.url WHERE urls.last_visit_time >= ?",
-            (start_of_last_day,))
+        self._cursor.execute(Scrapper.SQL_QUERY, (start_of_last_day,))
 
         results = self._cursor.fetchall()
         return results
