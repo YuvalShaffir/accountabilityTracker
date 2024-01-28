@@ -30,7 +30,7 @@ class metaExtractor:
         self._scraper = cloudscraper.create_scraper(browser=metaExtractor.BROWSER)
         self._headers = {'user-agent': metaExtractor.USER_AGENT}
 
-    def _get_request(self, website):
+    async def _get_request(self, website):
         """
         sends an HTTP GET request to the specified website. The headers, including the User-Agent,
         are provided to simulate a request from a specific browser and operating system.
@@ -99,7 +99,7 @@ class metaExtractor:
             print(e)
             return None
 
-    def _check_forbidden_access(self, metadata: str) -> str:
+    async def _check_forbidden_access(self, metadata: str) -> str:
         """
         Checks for metadata that has 'forbidden access' in it, and then makes a new search using wikipedia.
         Args:
@@ -109,12 +109,12 @@ class metaExtractor:
         for forbidden_access in metaExtractor.FORBIDDEN_ACCESS_LIST:
             if forbidden_access in metadata.lower():
                 website_title = get_website_name(self._request.url)
-                metadata = self._get_website_content(metaExtractor.WIKIPEDIA_URL + website_title)
+                metadata = await self._get_website_content(metaExtractor.WIKIPEDIA_URL + website_title)
                 break
 
         return metadata
 
-    def _get_website_content(self, website: str) -> str:
+    async def _get_website_content(self, website: str) -> str:
         """
         Extracts the metadata from the HTML document.
         Args:
@@ -122,7 +122,7 @@ class metaExtractor:
         @:returns: The metadata extracted from the HTML document.
         """
         try:
-            self._request = self._get_request(website)
+            self._request = await self._get_request(website)
             if self._request is None:
                 return ""
 
@@ -141,7 +141,7 @@ class metaExtractor:
             all_text = (str(title) + " " + str(description) + " " + str(h1_text) + " " + str(h2_text) + " "
                         + str(h3_text) + " " + str(p_text))
 
-            all_text = self._check_forbidden_access(all_text)
+            all_text = await self._check_forbidden_access(all_text)
 
             return all_text[0:999]
 
@@ -149,7 +149,7 @@ class metaExtractor:
             print(e)
             return ""
 
-    def extract(self):
+    async def extract(self):
         """
         Extracts the metadata from a dictionary of websites {{website : duration}}.
         Args:
@@ -157,5 +157,5 @@ class metaExtractor:
         @:returns: A dictionary of websites with metadata {{website : metadata}}.
         """
 
-        metadata_dict = {website: self._get_website_content(website) for website in tqdm(self.url_dict.keys())}
+        metadata_dict = {website: await self._get_website_content(website) for website in tqdm(self.url_dict.keys())}
         return {k: v for k, v in metadata_dict.items() if v != ""}  # remove empty metadata
