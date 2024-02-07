@@ -17,7 +17,8 @@ This innovative approach not only addresses the challenges posed by increased me
 - [x] Extracting metadata from each website 
 - [x] Categorizing websites using Google machine learning NLP categorization model 
 - [x] Designing the project as organized packages
-- [ ] Using asyncio to make the scrapping and metadata requests more efficient 
+- [x] Add multiprocessing to the extraction of metadata.
+- [ ] Add multiprocessing to the predictor.
 - [ ] Sending a message through Telegram
 - [ ] Creating GUI 
 
