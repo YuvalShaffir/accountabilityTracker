@@ -18,7 +18,7 @@ This innovative approach not only addresses the challenges posed by increased me
 - [x] Categorizing websites using Google machine learning NLP categorization model 
 - [x] Designing the project as organized packages
 - [x] Add multiprocessing to the extraction of metadata.
-- [ ] Add multiprocessing to the predictor.
+- [x] Add multiprocessing to the predictor.
 - [ ] Sending a message through Telegram
 - [ ] Creating GUI 
 
