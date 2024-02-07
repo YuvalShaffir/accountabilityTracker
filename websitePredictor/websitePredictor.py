@@ -41,7 +41,7 @@ class websitePredictor:
     def predict(self):
         predictions_dict = {}
 
-        with WorkerPool(n_jobs=10) as pool:
+        with WorkerPool(n_jobs=3) as pool:
             predictions_list = pool.map(self._get_prediction, self._meta_dict.values(), progress_bar=True)
 
         for i, url in enumerate(self._meta_dict.keys()):
