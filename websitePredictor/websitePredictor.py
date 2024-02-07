@@ -1,4 +1,5 @@
 import os
+from mpire import WorkerPool
 from google.cloud import language_v1
 from google.cloud import language
 
@@ -39,8 +40,13 @@ class websitePredictor:
 
     def predict(self):
         predictions_dict = {}
-        for url, metadata in self._meta_dict.items():
-            predictions_dict[url] = self._get_prediction(metadata)
+
+        with WorkerPool(n_jobs=10) as pool:
+            predictions_list = pool.map(self._get_prediction, self._meta_dict.values(), progress_bar=True)
+
+        for i, url in enumerate(self._meta_dict.keys()):
+            predictions_dict[url] = predictions_list[i]
+
         return predictions_dict
 
 if __name__ == '__main__':
