@@ -3,6 +3,7 @@
 import cloudscraper
 from bs4 import BeautifulSoup
 import asyncio
+from mpire import WorkerPool
 from tqdm import tqdm
 from Utils.utils import get_website_name
 import concurrent.futures
@@ -156,6 +157,12 @@ class metaExtractor:
             @:param: A dictionary of websites {{website : duration}}.
         @:returns: A dictionary of websites with metadata {{website : metadata}}.
         """
+        metadata_dict = {}
+        with WorkerPool(n_jobs=10) as pool:
+            metadata_list = pool.map(self._get_website_content, self.url_dict.keys(), progress_bar=True)
 
-        metadata_dict = {website: self._get_website_content(website) for website in tqdm(self.url_dict.keys())}
+        for i, website in enumerate(self.url_dict.keys()):
+            metadata_dict[website] = metadata_list[i]
+
+        # metadata_dict = {website: self._get_website_content(website) for website in tqdm(self.url_dict.keys())}
         return {k: v for k, v in metadata_dict.items() if v != ""}  # remove empty metadata
