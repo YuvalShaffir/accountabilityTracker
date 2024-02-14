@@ -2,11 +2,8 @@
 
 import cloudscraper
 from bs4 import BeautifulSoup
-import asyncio
 from mpire import WorkerPool
-from tqdm import tqdm
-from Utils.utils import get_website_name
-import concurrent.futures
+import Utils.utils as utils
 
 
 class metaExtractor:
@@ -109,7 +106,7 @@ class metaExtractor:
         """
         for forbidden_access in metaExtractor.FORBIDDEN_ACCESS_LIST:
             if forbidden_access in metadata.lower():
-                website_title = get_website_name(self._request.url)
+                website_title = utils.get_website_name(self._request.url)
                 metadata = self._get_website_content(metaExtractor.WIKIPEDIA_URL + website_title)
                 break
 
@@ -143,9 +140,11 @@ class metaExtractor:
                         + str(h3_text) + " " + str(p_text))
 
             all_text = self._check_forbidden_access(all_text)
+            translated_text = utils.translate_text(all_text[:999])
 
-            return all_text[0:999]
+            return translated_text
 
+        # TODO: Add more specific exceptions
         except Exception as e:
             print(e)
             return ""

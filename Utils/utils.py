@@ -2,17 +2,18 @@ from googletrans import Translator
 import matplotlib.pyplot as plt
 import tldextract
 
+translator = Translator()
 
 
 def translate_text(text: str):
     # Translate the text to English
     try:
-        translator = Translator()
         translation = translator.translate(text[0:999], dest='en').text
         return translation
 
     except Exception as e:
         print(e)
+        return text
 
 
 def show_predictions(predictions_dict, url_dict):

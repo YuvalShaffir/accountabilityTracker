@@ -1,7 +1,13 @@
+from unittest.mock import patch
+
 from Scrapper.metaExtractor import metaExtractor
 from Scrapper.scrapper import Scrapper
 import unittest
-import asyncio
+
+URL_KEY = "https://www.ynet.co.il"
+TEXT_TO_TRANSLATE = "אני אוהב אוכל"
+TRANSLATION_TEST = "I love food"
+TRASH_VALUE = 1.33
 
 
 class TestMetaExtractor(unittest.TestCase):
@@ -15,6 +21,16 @@ class TestMetaExtractor(unittest.TestCase):
         url_dict = Scrapper().scrap_history()
         meta_extractor = metaExtractor(url_dict)
         print(meta_extractor.extract())
+
+    @patch('Scrapper.metaExtractor.metaExtractor._check_forbidden_access', return_value=TEXT_TO_TRANSLATE)
+    def test_translate_text(self, mock_check_forbidden_access):
+        """ Check if the website is translated to English. """
+        url_dict = {URL_KEY: TRASH_VALUE}
+        meta_extractor = metaExtractor(url_dict)
+        res = meta_extractor.extract()[URL_KEY]
+        print(res)
+        # print(res.replace('"', ''))
+        assert (res == TRANSLATION_TEST)
 
 
 if __name__ == '__main__':

@@ -49,6 +49,7 @@ class websitePredictor:
 
         return predictions_dict
 
+
 if __name__ == '__main__':
     predictor = websitePredictor({'www.ynet.co.il': translation})
     predictor.predict()
