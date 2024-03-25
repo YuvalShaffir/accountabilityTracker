@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "accountabilityTracker"
+version = "0.0.1"
+authors = [
+    { name = "yuvalshaffir", email = "yshaffir@gmail.com" },
+]
+dependencies = ["matplotlib", "googletrans", "lxml", "cloudscraper", "beautifulsoup4", "google"]
+keywords = ['Scrapper', 'Utils', 'websitePredictor']
+license = { "file" = "LISENCE" }
+description = "A program that helps you keep track of your daily tasks and goals."
+readme = "README.md"
+requires-python = ">=3.8.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Everyone",
+    "Programming Language :: Python :: 3",
+    # "Operating system :: Unix",
+    # "Operating system :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+include = ["Scrapper", "Utils", "websitePredictor"]  # package names should match these glob patterns (["*"] by default)
+#exclude = ["my_package.tests*"]  # exclude packages matching these glob patterns (empty by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+[project.urls]
+"Homepage" = "https://github.com/YuvalShaffir/accountabilityTracker"
+"Bug Tracker" = "https://github.com/YuvalShaffir/accountabilityTracker/issues"

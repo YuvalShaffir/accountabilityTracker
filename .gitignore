@@ -1,4 +1,4 @@
-./Scrapper/History
+src/Scrapper/History
 ./ScrapperHistory
 .idea/
 **/__pycache__/

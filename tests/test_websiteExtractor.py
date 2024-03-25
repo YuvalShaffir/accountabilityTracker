@@ -22,13 +22,11 @@ class TestMetaExtractor(unittest.TestCase):
         meta_extractor = metaExtractor(url_dict)
         print(meta_extractor.extract())
 
-    @patch('Scrapper.metaExtractor.metaExtractor._check_forbidden_access', return_value=TEXT_TO_TRANSLATE)
-    def test_translate_text(self, mock_check_forbidden_access):
+    def test_translate_text(self):
         """ Check if the website is translated to English. """
         url_dict = {URL_KEY: TRASH_VALUE}
         meta_extractor = metaExtractor(url_dict)
-        res = meta_extractor.extract()[URL_KEY]
-        print(res)
+        res = meta_extractor.extract()
         # print(res.replace('"', ''))
         assert (res == TRANSLATION_TEST)
 
